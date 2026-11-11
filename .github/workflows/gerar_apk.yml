@@ -22,7 +22,7 @@ jobs:
 
       - name: Instalar Flet e Compilar APK
         run: |
-          pip install "flet==0.24.1" openpyxl
+          - run: pip install flet openpyxl
           flet build apk --project "Escala_Hospitalar" -v
 
       - name: Disponibilizar APK para Download
