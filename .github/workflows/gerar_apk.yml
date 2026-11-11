@@ -1,5 +1,10 @@
 name: Gerar APK Android
-on: [push, workflow_dispatch]
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-22.04
@@ -22,8 +27,14 @@ jobs:
 
       - name: Instalar Flet e Compilar APK
         run: |
-          - run: pip install flet openpyxl
-          flet build apk --project "Escala_Hospitalar" -v
+          python -m pip install --upgrade pip
+          pip install flet openpyxl
+          
+          # Se o seu código estiver dentro da pasta "Escala_Hospitalar":
+          flet build apk Escala_Hospitalar -v
+          
+          # OBS: Se os arquivos do seu app (main.py) estiverem direto na raiz do repositório, 
+          # substitua a linha acima apenas por: flet build apk -v
 
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
