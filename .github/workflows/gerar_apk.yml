@@ -1,13 +1,4 @@
-import os
-
-# 1. Atualiza o requirements.txt
-with open("requirements.txt", "w", encoding="utf-8") as f:
-    f.write("flet==0.24.1\nopenpyxl\n")
-
-# 2. Atualiza o workflow gerar_apk.yml corrigindo o erro exit code 2
-os.makedirs(".github/workflows", exist_ok=True)
-
-yaml_corrigido = """name: Gerar APK Android
+name: Gerar APK Android
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -39,9 +30,3 @@ jobs:
         with:
           name: Aplicativo-Escala-APK
           path: build/apk/*.apk
-"""
-
-with open(".github/workflows/gerar_apk.yml", "w", encoding="utf-8") as f:
-    f.write(yaml_corrigido)
-
-print("Workflow corrigido com sucesso!")
