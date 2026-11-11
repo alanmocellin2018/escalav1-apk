@@ -1,26 +1,47 @@
-name: Gerar APK Android
+import os
+
+# 1. Atualiza o requirements.txt
+with open("requirements.txt", "w", encoding="utf-8") as f:
+    f.write("flet==0.24.1\nopenpyxl\n")
+
+# 2. Atualiza o workflow gerar_apk.yml corrigindo o erro exit code 2
+os.makedirs(".github/workflows", exist_ok=True)
+
+yaml_corrigido = """name: Gerar APK Android
 on: [push, workflow_dispatch]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - uses: actions/setup-java@v4
+
+      - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
+
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.24.3'
           channel: 'stable'
+
       - name: Instalar Flet e Compilar APK
         run: |
           pip install "flet==0.24.1" openpyxl
-          flet build apk --project "Escala_Hospitalar" --yes
+          flet build apk --project "Escala_Hospitalar" -v
+
       - name: Disponibilizar APK para Download
         uses: actions/upload-artifact@v4
         with:
           name: Aplicativo-Escala-APK
           path: build/apk/*.apk
+"""
+
+with open(".github/workflows/gerar_apk.yml", "w", encoding="utf-8") as f:
+    f.write(yaml_corrigido)
+
+print("Workflow corrigido com sucesso!")
